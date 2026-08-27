@@ -16,13 +16,14 @@ import {
   Users,
 } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { rateTotal, rooms, type RatePlan, type RecheckOutcome, type RoomType } from '@/lib/data/hotel-detail'
 import { formatPrice, nightsLabel } from '@/lib/format'
-import { bookingHref, nightsBetween, type SearchContext } from '@/lib/search'
+import { bookingHref, nightsBetween, searchHref, type SearchContext } from '@/lib/search'
 import { cn } from '@/lib/utils'
 
 type Recheck =
@@ -30,7 +31,18 @@ type Recheck =
   | { state: 'checking'; roomId: string; rateId: string }
   | { state: 'result'; roomId: string; rateId: string; outcome: RecheckOutcome; total: number }
 
-export function RoomsSection({ search, slug }: { search: SearchContext; slug: string }) {
+export function RoomsSection({
+  search,
+  slug,
+  soldOut = false,
+  soldOutNote,
+}: {
+  search: SearchContext
+  slug: string
+  /** Поставщик не вернул цен на выбранные даты — тарифы показывать нельзя */
+  soldOut?: boolean
+  soldOutNote?: string
+}) {
   const router = useRouter()
   const nights = nightsBetween(search.checkIn, search.checkOut)
   const guests = search.adults + search.childrenAges.length
@@ -54,6 +66,31 @@ export function RoomsSection({ search, slug }: { search: SearchContext; slug: st
 
   function proceed(room: RoomType, rate: RatePlan, total: number) {
     router.push(bookingHref(slug, search, { roomId: room.id, rateId: rate.id, total }))
+  }
+
+  if (soldOut) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-5">
+        <p className="flex items-center gap-2 text-sm font-semibold">
+          <Ban className="size-4 shrink-0 text-[color:var(--danger)]" aria-hidden="true" />
+          Нет мест на выбранные даты
+        </p>
+        <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+          {soldOutNote ??
+            `На ${search.checkIn.split('-').reverse().join('.')} поставщик не вернул свободных номеров.`}{' '}
+          Описание отеля, фотографии и условия ниже остаются доступными — измените даты или посмотрите
+          похожие отели.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <Link href={searchHref(search)} className={buttonVariants({ variant: 'primary', size: 'sm' })}>
+            Изменить даты
+          </Link>
+          <a href="#similar" className={buttonVariants({ variant: 'outline', size: 'sm' })}>
+            Похожие отели
+          </a>
+        </div>
+      </div>
+    )
   }
 
   return (

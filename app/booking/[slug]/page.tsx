@@ -12,7 +12,7 @@ import { getHotel } from '@/lib/data/hotels'
 import { hotelHref, parseSearchParams } from '@/lib/search'
 
 export const metadata: Metadata = {
-  title: 'Оформление бронирования — Tip&Trip',
+  title: 'Оформление бронирования',
   description: 'Проверьте детали проживания, укажите данные гостя и подтвердите бронирование.',
   robots: { index: false, follow: false },
 }

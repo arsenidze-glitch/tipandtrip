@@ -7,12 +7,13 @@ import { BookingSummary } from '@/components/booking/summary'
 import { Logo } from '@/components/logo'
 import { SiteFooter } from '@/components/site-footer'
 import { buttonVariants } from '@/components/ui/button'
-import { findRoomAndRate, location, rateTotal } from '@/lib/data/hotel-detail'
+import { findRoomAndRate, rateTotal } from '@/lib/data/hotel-detail'
 import { getHotel } from '@/lib/data/hotels'
+import { formatKm } from '@/lib/format'
 import { formatLongDate, hotelHref, parseSearchParams } from '@/lib/search'
 
 export const metadata: Metadata = {
-  title: 'Бронирование подтверждено — Tip&Trip',
+  title: 'Бронирование подтверждено',
   description: 'Бронирование подтверждено. Детали проживания и следующие шаги.',
   robots: { index: false, follow: false },
 }
@@ -107,12 +108,12 @@ export default async function ConfirmedPage({ params, searchParams }: PageProps)
                   {
                     icon: Phone,
                     title: 'Закажите трансфер',
-                    body: location.transfer,
+                    body: `От аэропорта до отеля примерно ${formatKm(hotel.airportDistanceKm)} км. Трансфер можно заказать в отеле заранее или взять такси на месте.`,
                   },
                   {
                     icon: MapPin,
                     title: 'Сохраните адрес',
-                    body: `${location.address}. Покажите его водителю — на английском адрес понимают лучше.`,
+                    body: `${hotel.address}. Покажите его водителю — на местном языке адрес понимают лучше.`,
                   },
                 ].map((step) => (
                   <li key={step.title} className="flex gap-3">

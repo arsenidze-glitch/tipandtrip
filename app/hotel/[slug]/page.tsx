@@ -30,9 +30,9 @@ type PageProps = {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const hotel = getHotel(slug)
-  if (!hotel) return { title: 'Отель не найден — Tip&Trip' }
+  if (!hotel) return { title: 'Отель не найден' }
 
-  const title = `${hotel.name} — ${hotel.stars}★ отель в ${hotel.neighborhood}, ${hotel.city} | Tip&Trip`
+  const title = `${hotel.name} — ${hotel.stars}★ отель в ${hotel.neighborhood}, ${hotel.city}`
   const description = `${hotel.summary} Оценка гостей ${hotel.rating.toFixed(1).replace('.', ',')} из 10. Сравните номера и тарифы, посмотрите фото и отзывы.`
 
   return {
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     description,
     alternates: { canonical: `/hotel/${hotel.slug}` },
     openGraph: {
-      title,
+      title: `${title} | Tip&Trip`,
       description,
       type: 'website',
       images: [{ url: hotel.photos[0].src, width: 1200, height: 630, alt: hotel.photos[0].alt }],
@@ -107,7 +107,12 @@ export default async function HotelPage({ params, searchParams }: PageProps) {
               <HotelSection id="rooms" title="Номера и цены">
                 <div className="flex flex-col gap-4">
                   <SmartTip>{smartTips.booking}</SmartTip>
-                  <RoomsSection search={search} slug={hotel.slug} />
+                  <RoomsSection
+                    search={search}
+                    slug={hotel.slug}
+                    soldOut={hotel.offer == null}
+                    soldOutNote={hotel.soldOutNote}
+                  />
                 </div>
               </HotelSection>
 
@@ -132,10 +137,10 @@ export default async function HotelPage({ params, searchParams }: PageProps) {
               </HotelSection>
             </div>
 
-            <BookingAside search={search} />
+            <BookingAside search={search} soldOut={hotel.offer == null} />
           </div>
 
-          <section aria-labelledby="similar-title" className="border-t border-border pt-8">
+          <section id="similar" aria-labelledby="similar-title" className="scroll-mt-32 border-t border-border pt-8">
             <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
               <h2 id="similar-title" className="font-heading text-xl leading-tight font-bold sm:text-2xl">
                 Похожие отели в этом районе

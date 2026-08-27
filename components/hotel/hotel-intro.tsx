@@ -41,7 +41,7 @@ function buildHighlights(hotel: Hotel) {
   if (hotel.familyFriendly) {
     items.push({ icon: 'family', label: 'Семейные номера' })
   }
-  if (hotel.offer.meal !== 'none') {
+  if (hotel.offer && hotel.offer.meal !== 'room-only') {
     items.push({ icon: 'breakfast', label: hotel.offer.mealLabel })
   }
   if (hotel.facilities.includes('wifi')) {
