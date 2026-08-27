@@ -1,51 +1,47 @@
-export function LogoMark({ className = 'size-9' }: { className?: string }) {
+import Link from 'next/link'
+
+import { cn } from '@/lib/utils'
+
+export function LogoMark({ className }: { className?: string }) {
   return (
-    <span className={`relative grid shrink-0 place-items-center ${className}`}>
-      <svg viewBox="0 0 40 40" className="size-full" role="img" aria-hidden="true">
-        <defs>
-          <linearGradient id="tt-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stopColor="var(--azure)" />
-            <stop offset="55%" stopColor="var(--primary)" />
-            <stop offset="100%" stopColor="var(--chart-4)" />
-          </linearGradient>
-        </defs>
-
-        {/* Билетный корешок: скругленный квадрат с вырезами по бокам */}
-        <path
-          d="M8 2h24a6 6 0 0 1 6 6v6a6 6 0 0 0 0 12v6a6 6 0 0 1-6 6H8a6 6 0 0 1-6-6v-6a6 6 0 0 0 0-12V8a6 6 0 0 1 6-6Z"
-          fill="url(#tt-grad)"
-        />
-
-        {/* Маршрут: пунктирная дуга от точки старта к точке назначения */}
-        <path
-          d="M11 27c1.5-8 7-13 13.5-13.5"
-          fill="none"
-          stroke="oklch(1 0 0)"
-          strokeWidth="2.2"
-          strokeLinecap="round"
-          strokeDasharray="0.1 4.6"
-          opacity="0.9"
-        />
-        <circle cx="11" cy="27" r="2.6" fill="oklch(1 0 0)" />
-        {/* Флажок-вершина «tip» */}
-        <path d="M25 8.5v10.5l6.5-4.2Z" fill="var(--accent)" />
-      </svg>
-    </span>
+    <svg
+      viewBox="0 0 40 40"
+      className={cn('size-9 shrink-0', className)}
+      role="img"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="var(--brand)" />
+      <path
+        d="M10 28.5c2-9.5 8-15 15.5-16"
+        fill="none"
+        stroke="var(--brand-foreground)"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeDasharray="0.5 4.8"
+      />
+      <circle cx="10" cy="28.5" r="2.8" fill="var(--brand-foreground)" />
+      <path d="M24.5 7.5v11l7-4.6Z" fill="var(--brand-foreground)" />
+    </svg>
   )
 }
 
-export function Logo() {
+export function Logo({ className }: { className?: string }) {
   return (
-    <a
+    <Link
       href="/"
-      className="flex shrink-0 items-center gap-2.5"
-      aria-label="tipandtrip.com — на главную"
+      className={cn('flex shrink-0 items-center gap-2.5 rounded-lg', className)}
+      aria-label="Tip&Trip — на главную"
     >
       <LogoMark />
-      <span className="font-heading text-[19px] leading-none font-extrabold tracking-tight">
-        t<span className="text-primary">i</span>pandtr<span className="text-accent">i</span>p
-        <span className="font-semibold text-muted-foreground">.com</span>
+      <span className="flex flex-col leading-none">
+        <span className="font-heading text-[19px] font-extrabold tracking-tight">
+          Tip<span className="text-brand">&amp;</span>Trip
+        </span>
+        <span className="mt-1 hidden text-[11px] text-muted-foreground sm:block">
+          Smart tips. Better trips.
+        </span>
       </span>
-    </a>
+    </Link>
   )
 }
