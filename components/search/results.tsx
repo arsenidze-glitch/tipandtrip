@@ -95,18 +95,21 @@ export function SearchResults({ search }: { search: SearchContext }) {
   }, [filters, nights, sort])
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start xl:grid-cols-[13rem_minmax(0,1fr)_15rem]">
-      {/* Фильтры: сайдбар на десктопе */}
-      <aside className="hidden min-w-0 lg:block">
-        <div className="rounded-2xl border border-border bg-card p-5">
-          <h2 className="mb-4 font-heading text-base font-bold">Фильтры</h2>
-          <FiltersPanel
-            filters={filters}
-            onChange={setFilters}
-            counts={{ total: hotels.length, matched: visible.length }}
-          />
-        </div>
-      </aside>
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start">
+      <div className="hidden min-w-0 flex-col gap-4 lg:flex">
+        <MapPreview hotels={visible} nights={nights} />
+        {/* Фильтры: сайдбар на десктопе */}
+        <aside>
+          <div className="rounded-2xl border border-border bg-card p-5">
+            <h2 className="mb-4 font-heading text-base font-bold">Фильтры</h2>
+            <FiltersPanel
+              filters={filters}
+              onChange={setFilters}
+              counts={{ total: hotels.length, matched: visible.length }}
+            />
+          </div>
+        </aside>
+      </div>
 
       <div className="min-w-0 flex-1">
         <div className="lg:hidden">
@@ -202,10 +205,6 @@ export function SearchResults({ search }: { search: SearchContext }) {
           </ul>
         )}
       </div>
-
-      <aside className="hidden min-w-0 xl:block">
-        <MapPreview hotels={visible} nights={nights} />
-      </aside>
 
       {/* Фильтры: полноэкранная панель на мобильных */}
       {sheetOpen && (
