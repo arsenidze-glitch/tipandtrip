@@ -95,7 +95,7 @@ export function SearchResults({ search }: { search: SearchContext }) {
   }, [filters, nights, sort])
 
   return (
-    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start xl:grid-cols-[15rem_minmax(0,1fr)_17rem]">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[13rem_minmax(0,1fr)] lg:items-start xl:grid-cols-[13rem_minmax(0,1fr)_15rem]">
       {/* Фильтры: сайдбар на десктопе */}
       <aside className="hidden min-w-0 lg:block">
         <div className="rounded-2xl border border-border bg-card p-5">

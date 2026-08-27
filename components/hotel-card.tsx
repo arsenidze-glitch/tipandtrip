@@ -40,7 +40,7 @@ export function HotelCard({
       <div className="flex flex-col sm:flex-row">
         <Link
           href={href}
-          className="relative block aspect-[4/3] w-full shrink-0 sm:h-48 sm:w-64 sm:aspect-auto lg:h-52 lg:w-72"
+          className="relative block aspect-[4/3] w-full shrink-0 sm:h-48 sm:w-64 sm:aspect-auto lg:h-52 lg:w-72 xl:h-44 xl:w-56"
           tabIndex={-1}
           aria-hidden="true"
         >
@@ -66,7 +66,7 @@ export function HotelCard({
           )}
         </Link>
 
-        <div className="flex min-w-0 flex-1 flex-col gap-4 p-4 lg:flex-row lg:gap-6">
+        <div className="flex min-w-0 flex-1 flex-col gap-4 p-4 lg:flex-row lg:gap-6 xl:gap-4">
           <div className="order-2 min-w-0 flex-1 lg:order-2">
             <div className="flex flex-wrap items-center gap-2">
               <Stars count={hotel.stars} />
@@ -133,7 +133,7 @@ export function HotelCard({
             )}
           </div>
 
-          <div className="order-1 flex shrink-0 flex-col items-start gap-2 border-t border-border pt-3 lg:order-1 lg:w-52 lg:border-t-0 lg:border-r lg:pt-0 lg:pr-6 lg:text-left">
+          <div className="order-1 flex shrink-0 flex-col items-start gap-2 border-t border-border pt-3 lg:order-1 lg:w-52 lg:border-t-0 lg:border-r lg:pt-0 lg:pr-6 lg:text-left xl:w-40 xl:pr-4">
             {offer ? (
               <>
                 <p className="text-xs text-muted-foreground">
