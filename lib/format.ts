@@ -61,3 +61,8 @@ export function ratingLabel(score: number) {
 export function formatScore(score: number) {
   return score.toFixed(1).replace('.', ',')
 }
+
+export function formatKm(value: number) {
+  const rounded = value >= 10 ? Math.round(value) : Number(value.toFixed(1))
+  return String(rounded).replace('.', ',')
+}

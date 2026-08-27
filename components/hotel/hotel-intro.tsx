@@ -11,8 +11,8 @@ import {
 } from 'lucide-react'
 
 import { RatingBadge, Stars } from '@/components/rating-badge'
-import { highlights } from '@/lib/data/hotel-detail'
 import type { Hotel } from '@/lib/data/hotels'
+import { formatKm, formatScore } from '@/lib/format'
 
 const ICONS: Record<string, LucideIcon> = {
   waves: Waves,
@@ -22,6 +22,35 @@ const ICONS: Record<string, LucideIcon> = {
   car: Car,
   wifi: Wifi,
   star: Star,
+}
+
+function buildHighlights(hotel: Hotel) {
+  const items: { icon: string; label: string }[] = [
+    {
+      icon: 'waves',
+      label:
+        hotel.beachDistanceM <= 1000
+          ? `${hotel.beachDistanceM} м до пляжа ${hotel.neighborhood}`
+          : `${formatKm(hotel.beachDistanceM / 1000)} км до моря`,
+    },
+  ]
+
+  if (hotel.facilities.includes('pool')) {
+    items.push({ icon: 'pool', label: 'Открытый бассейн' })
+  }
+  if (hotel.familyFriendly) {
+    items.push({ icon: 'family', label: 'Семейные номера' })
+  }
+  if (hotel.offer.meal !== 'none') {
+    items.push({ icon: 'breakfast', label: hotel.offer.mealLabel })
+  }
+  if (hotel.facilities.includes('wifi')) {
+    items.push({ icon: 'wifi', label: 'Бесплатный Wi-Fi' })
+  }
+  items.push({ icon: 'car', label: `${formatKm(hotel.airportDistanceKm)} км до аэропорта` })
+  items.push({ icon: 'star', label: `Оценка гостей ${formatScore(hotel.rating)}` })
+
+  return items
 }
 
 export function HotelIntro({ hotel }: { hotel: Hotel }) {
@@ -55,7 +84,7 @@ export function HotelIntro({ hotel }: { hotel: Hotel }) {
       </div>
 
       <ul className="flex flex-wrap gap-2">
-        {highlights.map((item) => {
+        {buildHighlights(hotel).map((item) => {
           const Icon = ICONS[item.icon] ?? Star
           return (
             <li

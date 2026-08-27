@@ -46,16 +46,6 @@ export type RoomType = {
 
 export const detailHotelSlug = 'seaview-paradise-phuket'
 
-export const highlights = [
-  { icon: 'waves', label: '350 м до пляжа Карон' },
-  { icon: 'pool', label: 'Открытый бассейн' },
-  { icon: 'family', label: 'Семейные номера' },
-  { icon: 'breakfast', label: 'Завтрак включён в большинство тарифов' },
-  { icon: 'car', label: 'Трансфер из аэропорта' },
-  { icon: 'wifi', label: 'Бесплатный Wi-Fi' },
-  { icon: 'star', label: 'Оценка гостей 8,8' },
-]
-
 export const smartTips = {
   area: 'На Пхукете районы Патонг, Карон и Банг-Тао подходят для разных типов отдыха. Перед выбором отеля сравните не только расстояние до пляжа, но и время в пути до интересующих вас мест.',
   hotel:
@@ -175,7 +165,7 @@ export const rooms: RoomType[] = [
       'Площадь 32 м², обновлён в 2024 году',
       'Кровать King Size 200 × 200 см',
       'Балкон с видом на море через линию пальм',
-      'Кофемашина и капсулы, чайник, мини-бар',
+      'Кофемашина и кап��улы, чайник, мини-бар',
     ],
     fitsSearch: false,
     fitsNote: 'Максимум 2 гостя — не подходит для 2 взрослых и 1 ребёнка',

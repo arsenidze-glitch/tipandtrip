@@ -11,7 +11,12 @@ import { formatPrice } from '@/lib/format'
 import { searchToParams, type SearchContext } from '@/lib/search'
 import { cn } from '@/lib/utils'
 
-type Errors = Partial<Record<'firstName' | 'lastName' | 'email' | 'phone' | 'card' | 'terms', string>>
+type Errors = Partial<
+  Record<
+    'firstName' | 'lastName' | 'email' | 'phone' | 'card' | 'expiry' | 'cvc' | 'terms',
+    string
+  >
+>
 
 const inputClass =
   'h-11 w-full rounded-lg border border-input bg-card px-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-primary'
@@ -70,12 +75,16 @@ export function BookingForm({
     const email = String(data.get('email') ?? '').trim()
     const phone = String(data.get('phone') ?? '').trim()
     const card = String(data.get('card') ?? '').replace(/\s/g, '')
+    const expiry = String(data.get('expiry') ?? '').trim()
+    const cvc = String(data.get('cvc') ?? '').trim()
 
     if (firstName.length < 2) next.firstName = 'Укажите имя латиницей, как в паспорте'
     if (lastName.length < 2) next.lastName = 'Укажите фамилию латиницей, как в паспорте'
     if (!/^[^@\s]+@[^@\s]+\.[a-zA-Z]{2,}$/.test(email)) next.email = 'Проверьте адрес электронной почты'
     if (phone.replace(/\D/g, '').length < 10) next.phone = 'Введите телефон с кодом страны'
     if (card.length < 12 || !/^\d+$/.test(card)) next.card = 'Введите 16 цифр номера карты'
+    if (!/^(0[1-9]|1[0-2])\s*\/\s*\d{2}$/.test(expiry)) next.expiry = 'Срок действия в формате ММ/ГГ'
+    if (!/^\d{3,4}$/.test(cvc)) next.cvc = 'CVC — 3 цифры на обороте карты'
     if (!data.get('terms')) next.terms = 'Подтвердите согласие с правилами бронирования'
 
     setErrors(next)
@@ -194,15 +203,17 @@ export function BookingForm({
           ))}
         </div>
 
-        <Field label="Комментарий отелю" hint="До 300 символов, на английском или русском">
-          <textarea
-            name="comment"
-            rows={3}
-            maxLength={300}
-            placeholder="Например: приедем около 22:00"
-            className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-primary"
-          />
-        </Field>
+        <div className="mt-4">
+          <Field label="Комментарий отелю" hint="До 300 символов, на английском или русском">
+            <textarea
+              name="comment"
+              rows={3}
+              maxLength={300}
+              placeholder="Например: приедем около 22:00"
+              className="w-full rounded-lg border border-input bg-card px-3 py-2 text-sm outline-none placeholder:text-muted-foreground focus-visible:border-primary"
+            />
+          </Field>
+        </div>
       </section>
 
       <section aria-labelledby="payment-title" className="rounded-2xl border border-border bg-card p-4 sm:p-5">
@@ -227,22 +238,24 @@ export function BookingForm({
               />
             </Field>
           </div>
-          <Field label="Срок действия">
+          <Field label="Срок действия" error={errors.expiry}>
             <input
               name="expiry"
               inputMode="numeric"
               autoComplete="cc-exp"
               placeholder="ММ/ГГ"
-              className={cn(inputClass, 'tabular')}
+              aria-invalid={errors.expiry ? true : undefined}
+              className={cn(inputClass, 'tabular', errors.expiry && 'border-destructive')}
             />
           </Field>
-          <Field label="CVC">
+          <Field label="CVC" error={errors.cvc}>
             <input
               name="cvc"
               inputMode="numeric"
               autoComplete="cc-csc"
               placeholder="000"
-              className={cn(inputClass, 'tabular')}
+              aria-invalid={errors.cvc ? true : undefined}
+              className={cn(inputClass, 'tabular', errors.cvc && 'border-destructive')}
             />
           </Field>
         </div>

@@ -42,13 +42,13 @@ export function Gallery({ photos, hotelName }: { photos: HotelPhoto[]; hotelName
           <span className="sr-only">Открыть все фотографии {hotelName}</span>
         </button>
 
-        <div className="grid grid-cols-2 gap-2 sm:grid-cols-1 sm:grid-rows-2 lg:grid-cols-2 lg:grid-rows-2">
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-col">
           {side.map((photo, index) => (
             <button
               key={photo.src + index}
               type="button"
               onClick={() => setOpenIndex(index + 1)}
-              className="relative h-28 overflow-hidden rounded-xl sm:h-full"
+              className="relative h-28 overflow-hidden rounded-xl sm:h-auto sm:min-h-0 sm:flex-1"
             >
               <Image
                 src={photo.src}
