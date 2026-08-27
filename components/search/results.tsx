@@ -95,9 +95,9 @@ export function SearchResults({ search }: { search: SearchContext }) {
   }, [filters, nights, sort])
 
   return (
-    <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+    <div className="flex flex-col gap-6 lg:grid lg:grid-cols-[15rem_minmax(0,1fr)] lg:items-start xl:grid-cols-[15rem_minmax(0,1fr)_17rem]">
       {/* Фильтры: сайдбар на десктопе */}
-      <aside className="hidden w-72 shrink-0 lg:block">
+      <aside className="hidden min-w-0 lg:block">
         <div className="rounded-2xl border border-border bg-card p-5">
           <h2 className="mb-4 font-heading text-base font-bold">Фильтры</h2>
           <FiltersPanel
@@ -203,7 +203,7 @@ export function SearchResults({ search }: { search: SearchContext }) {
         )}
       </div>
 
-      <aside className="hidden w-72 shrink-0 xl:block">
+      <aside className="hidden min-w-0 xl:block">
         <MapPreview hotels={visible} nights={nights} />
       </aside>
 
