@@ -13,6 +13,8 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-soft: var(--brand-soft);
@@ -48,12 +50,15 @@
   --popover: #ffffff;
   --popover-foreground: #101418;
 
-  --primary: #0462d3;
+  /* Палитра взята из логотипа: синий чемодан, бирюзовая «дорога», чёрный шрифт */
+  --primary: #0b5fe0;
+  --primary-hover: #0a52c2;
+  --primary-active: #0946a6;
   --primary-foreground: #ffffff;
 
-  --brand: #00a8b8;
+  --brand: #13a4a8;
   --brand-foreground: #ffffff;
-  --brand-soft: #e6f7f9;
+  --brand-soft: #e4f6f6;
 
   --secondary: #eef3f6;
   --secondary-foreground: #1d242c;
@@ -70,7 +75,7 @@
   --border: #e2e8ee;
   --border-strong: #cdd7e1;
   --input: #cdd7e1;
-  --ring: #0462d3;
+  --ring: #0b5fe0;
 }
 
 @layer base {
