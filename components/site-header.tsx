@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Logo } from '@/components/logo'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const nav = [
@@ -23,7 +23,14 @@ function SoonBadge() {
   )
 }
 
-export function SiteHeader({ className }: { className?: string }) {
+export function SiteHeader({
+  className,
+  user,
+}: {
+  className?: string
+  /** Имя залогиненного пользователя — вместо «Войти» показывается ссылка в кабинет */
+  user?: { name: string; initials: string }
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -79,10 +86,25 @@ export function SiteHeader({ className }: { className?: string }) {
           >
             <Heart className="size-4" />
           </button>
-          <Button variant="outline" size="sm" className="hidden md:inline-flex">
-            <User className="size-4" aria-hidden="true" />
-            Войти
-          </Button>
+          {user ? (
+            <Link
+              href="/account"
+              className="hidden h-9 items-center gap-2 rounded-lg pr-3 pl-1 text-sm font-medium transition-colors hover:bg-muted md:flex"
+            >
+              <span
+                aria-hidden="true"
+                className="grid size-7 place-items-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground"
+              >
+                {user.initials}
+              </span>
+              {user.name}
+            </Link>
+          ) : (
+            <Link href="/login" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'hidden md:inline-flex')}>
+              <User className="size-4" aria-hidden="true" />
+              Войти
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -128,10 +150,14 @@ export function SiteHeader({ className }: { className?: string }) {
               <Globe className="size-4" aria-hidden="true" />
               RU · EUR
             </Button>
-            <Button variant="primary" size="sm" block>
+            <Link
+              href={user ? '/account' : '/login'}
+              onClick={() => setMenuOpen(false)}
+              className={buttonVariants({ variant: 'primary', size: 'sm', block: true })}
+            >
               <User className="size-4" aria-hidden="true" />
-              Войти
-            </Button>
+              {user ? 'Кабинет' : 'Войти'}
+            </Link>
           </div>
         </div>
       )}
