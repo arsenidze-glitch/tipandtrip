@@ -9,11 +9,19 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const nav = [
-  { label: 'Отели', href: '/' },
-  { label: 'Авиабилеты', href: '/' },
-  { label: 'Туры', href: '/' },
-  { label: 'Аренда авто', href: '/' },
+  { label: 'Отели', href: '/', soon: false },
+  { label: 'Авиабилеты', href: '/', soon: true },
+  { label: 'Туры', href: '/', soon: true },
+  { label: 'Аренда авто', href: '/', soon: true },
 ]
+
+function SoonBadge() {
+  return (
+    <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+      скоро
+    </span>
+  )
+}
 
 export function SiteHeader({ className }: { className?: string }) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -27,12 +35,23 @@ export function SiteHeader({ className }: { className?: string }) {
           <ul className="flex items-center gap-1">
             {nav.map((item) => (
               <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="flex h-9 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
+                {item.soon ? (
+                  <span
+                    aria-disabled="true"
+                    title="Раздел скоро появится"
+                    className="flex h-9 cursor-not-allowed items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-muted-foreground/60"
+                  >
+                    {item.label}
+                    <SoonBadge />
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="flex h-9 items-center rounded-lg px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -82,14 +101,25 @@ export function SiteHeader({ className }: { className?: string }) {
           <ul className="flex flex-col">
             {nav.map((item) => (
               <li key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
-                >
-                  <Plane className="size-4 text-muted-foreground" aria-hidden="true" />
-                  {item.label}
-                </Link>
+                {item.soon ? (
+                  <span
+                    aria-disabled="true"
+                    className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground/60"
+                  >
+                    <Plane className="size-4" aria-hidden="true" />
+                    {item.label}
+                    <SoonBadge />
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                  >
+                    <Plane className="size-4 text-muted-foreground" aria-hidden="true" />
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
