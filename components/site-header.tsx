@@ -5,17 +5,32 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 import { Logo } from '@/components/logo'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
 const nav = [
-  { label: 'Отели', href: '/' },
-  { label: 'Авиабилеты', href: '/' },
-  { label: 'Туры', href: '/' },
-  { label: 'Аренда авто', href: '/' },
+  { label: 'Отели', href: '/', soon: false },
+  { label: 'Авиабилеты', href: '/', soon: true },
+  { label: 'Туры', href: '/', soon: true },
+  { label: 'Аренда авто', href: '/', soon: true },
 ]
 
-export function SiteHeader({ className }: { className?: string }) {
+function SoonBadge() {
+  return (
+    <span className="rounded-full bg-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+      скоро
+    </span>
+  )
+}
+
+export function SiteHeader({
+  className,
+  user,
+}: {
+  className?: string
+  /** Имя залогиненного пользователя — вместо «Войти» показывается ссылка в кабинет */
+  user?: { name: string; initials: string }
+}) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -27,12 +42,23 @@ export function SiteHeader({ className }: { className?: string }) {
           <ul className="flex items-center gap-1">
             {nav.map((item) => (
               <li key={item.label}>
-                <Link
-                  href={item.href}
-                  className="flex h-9 items-center rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
+                {item.soon ? (
+                  <span
+                    aria-disabled="true"
+                    title="Раздел скоро появится"
+                    className="flex h-9 cursor-not-allowed items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-muted-foreground/60"
+                  >
+                    {item.label}
+                    <SoonBadge />
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="flex h-9 items-center rounded-lg px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted"
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -60,10 +86,25 @@ export function SiteHeader({ className }: { className?: string }) {
           >
             <Heart className="size-4" />
           </button>
-          <Button variant="outline" size="sm" className="hidden md:inline-flex">
-            <User className="size-4" aria-hidden="true" />
-            Войти
-          </Button>
+          {user ? (
+            <Link
+              href="/account"
+              className="hidden h-9 items-center gap-2 rounded-lg pr-3 pl-1 text-sm font-medium transition-colors hover:bg-muted md:flex"
+            >
+              <span
+                aria-hidden="true"
+                className="grid size-7 place-items-center rounded-full bg-primary text-[11px] font-bold text-primary-foreground"
+              >
+                {user.initials}
+              </span>
+              {user.name}
+            </Link>
+          ) : (
+            <Link href="/login" className={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'hidden md:inline-flex')}>
+              <User className="size-4" aria-hidden="true" />
+              Войти
+            </Link>
+          )}
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -82,14 +123,25 @@ export function SiteHeader({ className }: { className?: string }) {
           <ul className="flex flex-col">
             {nav.map((item) => (
               <li key={item.label}>
-                <Link
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
-                >
-                  <Plane className="size-4 text-muted-foreground" aria-hidden="true" />
-                  {item.label}
-                </Link>
+                {item.soon ? (
+                  <span
+                    aria-disabled="true"
+                    className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground/60"
+                  >
+                    <Plane className="size-4" aria-hidden="true" />
+                    {item.label}
+                    <SoonBadge />
+                  </span>
+                ) : (
+                  <Link
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-center gap-2 rounded-lg px-2 py-2.5 text-sm font-medium transition-colors hover:bg-muted"
+                  >
+                    <Plane className="size-4 text-muted-foreground" aria-hidden="true" />
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -98,10 +150,14 @@ export function SiteHeader({ className }: { className?: string }) {
               <Globe className="size-4" aria-hidden="true" />
               RU · EUR
             </Button>
-            <Button variant="primary" size="sm" block>
+            <Link
+              href={user ? '/account' : '/login'}
+              onClick={() => setMenuOpen(false)}
+              className={buttonVariants({ variant: 'primary', size: 'sm', block: true })}
+            >
               <User className="size-4" aria-hidden="true" />
-              Войти
-            </Button>
+              {user ? 'Кабинет' : 'Войти'}
+            </Link>
           </div>
         </div>
       )}
