@@ -89,7 +89,7 @@ export default async function HotelPage({ params, searchParams }: PageProps) {
 
         <div className="flex flex-col gap-6">
           <HotelIntro hotel={hotel} />
-          <Gallery photos={hotel.photos} hotelName={hotel.name} />
+          <Gallery photos={hotel.photos} hotelName={hotel.name} photosCount={hotel.photosCount} />
           <SectionNav />
 
           <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-start">
